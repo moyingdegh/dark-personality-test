@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>社交面具之下：你的暗黑人格成分鉴定</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==================== 首页 ==================== -->
+<div id="page-intro" class="page active">
+  <div class="intro-container">
+    <div class="intro-octa-wrap">
+      <canvas id="octahedron-canvas" width="360" height="360"></canvas>
+    </div>
+    <h1 class="intro-title">社交面具之下</h1>
+    <p class="intro-subtitle">你的暗黑人格成分鉴定</p>
+    <span class="intro-badge">⚠ 仅限心理承受力强者</span>
+    <button class="btn-start" onclick="startQuiz()">开始测试</button>
+    <div class="intro-footer">20道情境推演 · 8重暗黑维度</div>
+  </div>
+</div>
+
+<!-- ==================== 答题页 ==================== -->
+<div id="page-quiz" class="page">
+  <div class="container">
+    <div class="quiz-header">
+      <span class="quiz-scenario" id="quiz-scenario">职场与校园生存法则</span>
+      <span class="quiz-progress-text" id="quiz-progress">1 / 20</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div id="question-area">
+      <div class="card question-card">
+        <div class="question-number" id="q-number">#01</div>
+        <div class="question-text" id="q-text"></div>
+      </div>
+      <div class="options-grid" id="options-container"></div>
+    </div>
+    <div class="quiz-nav" id="quiz-nav">
+      <button class="btn-prev" id="btn-prev" onclick="prevQuestion()">← 上一题</button>
+      <button class="btn-next" id="btn-next" onclick="revealResults()">揭晓答案 ✦</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 加载页 ==================== -->
+<div id="page-loading" class="page">
+  <div class="loading-content">
+    <div class="loading-seal">☰</div>
+    <div class="loading-typewriter" id="loading-typewriter"></div>
+  </div>
+</div>
+
+<!-- ==================== 结果页 ==================== -->
+<div id="page-result" class="page">
+  <div class="container" id="result-container">
+
+    <!-- 模块一：视觉顶冕 -->
+    <div class="result-header">
+      <div class="result-file-number" id="result-file-number"></div>
+      <div class="result-dominant-title" id="result-dominant-title"></div>
+      <div class="result-dominant-sub" id="result-dominant-sub"></div>
+    </div>
+
+    <div class="tear-section">
+      <div class="tear-box mask">
+        <div class="tear-placeholder"><span class="tear-placeholder-icon">◉</span></div>
+        <div class="tear-label">表层人格面具 <span class="en">(Persona)</span></div>
+        <div class="tear-text" id="tear-mask"></div>
+      </div>
+      <div class="tear-box core">
+        <div class="tear-label">深层阴影内核 <span class="en">(Shadow)</span></div>
+        <div class="tear-text" id="tear-core"></div>
+      </div>
+    </div>
+
+    <div class="quote-block" id="villain-quote"></div>
+
+    <!-- 模块二：暗黑指数 -->
+    <div class="card dei-section">
+      <span class="dei-label">隐性恶能指数</span>
+      <span class="dei-number" id="dei-number">0%</span>
+      <div class="dei-compare" id="dei-compare"></div>
+    </div>
+
+    <!-- 模块三：雷达图 -->
+    <div class="card radar-section">
+      <div class="section-title">⚡ 八大基因雷达图</div>
+      <div class="radar-wrapper">
+        <canvas id="radar-canvas" width="320" height="320"></canvas>
+      </div>
+      <div class="radar-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#8A1C2E"></span> 你的暗黑面</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#C4C0BA"></span> 人群均分</span>
+      </div>
+    </div>
+
+    <!-- 模块四：Top 3 -->
+    <div class="card top3-section">
+      <div class="section-title">🔥 危险组合侧写</div>
+      <div class="top3-list" id="top3-list"></div>
+      <div class="chemistry-text" id="chemistry-text"></div>
+    </div>
+
+    <!-- 模块五：全维度展开 -->
+    <div class="card all-genes-section">
+      <div class="section-title">🧬 潜意识深度解剖 <span class="section-subnote">满分值为 100%</span></div>
+      <div id="all-genes-container"></div>
+    </div>
+
+    <!-- 模块六：社交彩蛋 + 分享 -->
+    <div class="card egg-section">
+      <div class="section-title">🎭 社交互动档案</div>
+      <div class="egg-grid">
+        <div class="egg-card">
+          <div class="egg-emoji">⚡</div>
+          <div class="egg-label">危险觉醒时刻</div>
+          <div class="egg-value" id="egg-trigger"></div>
+        </div>
+        <div class="egg-card">
+          <div class="egg-emoji">🤝</div>
+          <div class="egg-label">宿命共犯</div>
+          <div class="egg-value" id="egg-ally"></div>
+        </div>
+        <div class="egg-card">
+          <div class="egg-emoji">💀</div>
+          <div class="egg-label">天生宿敌</div>
+          <div class="egg-value" id="egg-enemy"></div>
+        </div>
+        <div class="egg-card">
+          <div class="egg-emoji">🎯</div>
+          <div class="egg-label">暗黑等级</div>
+          <div class="egg-value" id="egg-level"></div>
+        </div>
+      </div>
+      <button class="share-btn" onclick="shareResult()">📷 生成绝密海报</button>
+      <p class="share-note">保存图片即可分享到朋友圈 / 小红书</p>
+    </div>
+
+    <!-- 重新测试 -->
+    <button class="btn-retake" onclick="resetTest()">↻ 重新测试</button>
+    <div style="height:40px;"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
