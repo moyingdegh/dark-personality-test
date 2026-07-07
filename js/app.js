@@ -285,6 +285,9 @@ function selectOption(qIndex, btn) {
   if (state.isTyping) return;
   if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
 
+  // 清除焦点，避免下一个渲染的按钮继承 :hover / :focus 粘滞
+  if (document.activeElement) document.activeElement.blur();
+
   const siblings = btn.parentElement.querySelectorAll('.option-btn');
   siblings.forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
