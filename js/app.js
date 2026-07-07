@@ -609,7 +609,13 @@ function drawRadar(displayPcts) {
   const canvas = $('radar-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
   const W = 320, H = 320;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
   const cx = W / 2, cy = H / 2;
   const R = 125;
   const n = GENE_ORDER.length;

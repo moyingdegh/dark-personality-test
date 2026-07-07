@@ -703,8 +703,7 @@ body {
 
 .radar-wrapper canvas {
   max-width: 100%;
-  width: 300px;
-  height: 300px;
+  display: block;
 }
 
 .radar-legend {
